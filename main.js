@@ -25,17 +25,20 @@ function onPing(msg) {
 
 function onRoll(msg) {
   msg.channel.send(
-    msg.author.username + ' has rolled ' + (Math.floor(Math.random() * 100) + 1) + '!'
+    msg.author.username 
+    + ' has rolled ' 
+    + (Math.floor(Math.random() * 100) + 1) 
+    + '!'
   );
 }
 
 client.on('messageReactionAdd', (reaction, user) => {
   let channel = client.channels.find(channel => channel.id === reaction.message.channel.id);
-  let reactionAuthor;
-  for (user of reaction.users) {
-    reactionAuthor = user[1].username;
-  }
-  channel.send(reactionAuthor + ' reacted to ' + reaction.message.author + ' with ' + reaction._emoji.name);
+  channel.send(reaction.users.last().username 
+    + ' reacted to ' 
+    + reaction.message.author 
+    + ' with ' 
+    + reaction._emoji.name);
 });
 
 client.login(process.env.BOT_KEY);
