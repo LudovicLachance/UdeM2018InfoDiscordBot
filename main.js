@@ -7,27 +7,30 @@ client.on('ready', () => {
 });
 
 client.on('message', msg => {
-	var cmd = msg.content;
-	switch (cmd) {
-		case '!ping':
-			msg.channel.send('pong');
-			break;
-		case '!roll':
-			msg.channel.send(
-				msg.author.username + ' has rolled ' + (Math.floor(Math.random() * 100) + 1) + '!'
-			);
-			break;
-	}
+  let actions = {
+    '!roll': onRoll,
+    '!ping': onPing,
+  };
+
+	let cmd = msg.content;
+
+  if (cmd in actions) {
+    actions[cmd](msg);    
+  }
 });
 
+function onPing(msg) {
+  msg.channel.send('pong');
+}
+
+function onRoll(msg) {
+  msg.channel.send(
+    msg.author.username + ' has rolled ' + (Math.floor(Math.random() * 100) + 1) + '!'
+  );
+}
+
 client.on('messageReactionAdd', (reaction, user) => {
-	//console.log(reaction)
-	var yourChannel = client.channels.find('id', reaction.message.channel.id);
-	var reactionAuthor;
-	for (user of reaction.users) {
-		reactionAuthor = user[1].username;
-	}
-	yourChannel.send(reactionAuthor + ' reacted to ' + reaction.message.author + ' with ' + reaction._emoji.name);
+	reaction.message.channel.send(reaction.users[1] + ' reacted to ' + reaction.message.author + ' with ' + reaction._emoji.name);
 });
 
 client.login(process.env.BOT_KEY);
