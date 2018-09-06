@@ -22,7 +22,7 @@ client.on('message', msg => {
 
 client.on('messageReactionAdd', (reaction, user) => {
 	//console.log(reaction)
-	var yourChannel = Bot.channels.find('id', reaction.message.channel.id);
+	var yourChannel = client.channels.find('id', reaction.message.channel.id);
 	var reactionAuthor;
 	for (user of reaction.users) {
 		reactionAuthor = user[1].username;
