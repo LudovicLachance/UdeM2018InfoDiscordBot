@@ -31,7 +31,4 @@ client.on('messageReactionAdd', (reaction, user) => {
 	yourChannel.send(reactionAuthor + ' reacted to ' + reaction.message.author + ' with ' + reaction._emoji.name);
 });
 
-client.login('token');
-=======
 client.login(process.env.BOT_KEY);
->>>>>>> 891556815d46b842dadd51eca5fa2c8144982483
