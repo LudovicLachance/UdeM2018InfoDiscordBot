@@ -1,3 +1,4 @@
+require('dotenv').config()
 const Discord = require('discord.js');
 const client = new Discord.Client();
 
@@ -19,6 +20,7 @@ client.on('message', msg => {
 	}
 });
 
+<<<<<<< HEAD
 client.on('messageReactionAdd', (reaction, user) => {
 	//console.log(reaction)
 	var yourChannel = Bot.channels.find('id', reaction.message.channel.id);
@@ -30,3 +32,6 @@ client.on('messageReactionAdd', (reaction, user) => {
 });
 
 client.login('token');
+=======
+client.login(process.env.BOT_KEY);
+>>>>>>> 891556815d46b842dadd51eca5fa2c8144982483
