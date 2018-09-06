@@ -30,7 +30,12 @@ function onRoll(msg) {
 }
 
 client.on('messageReactionAdd', (reaction, user) => {
-	reaction.message.channel.send(reaction.users[1] + ' reacted to ' + reaction.message.author + ' with ' + reaction._emoji.name);
+  let channel = client.channels.find(channel => channel.id === reaction.message.channel.id);
+  let reactionAuthor;
+  for (user of reaction.users) {
+    reactionAuthor = user[1].username;
+  }
+  channel.send(reactionAuthor + ' reacted to ' + reaction.message.author + ' with ' + reaction._emoji.name);
 });
 
 client.login(process.env.BOT_KEY);
