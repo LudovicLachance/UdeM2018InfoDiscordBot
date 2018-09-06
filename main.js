@@ -15,7 +15,7 @@ client.on('message', msg => {
   let cmd = msg.content;
 
   if (cmd in actions) {
-    actions[cmd](msg);    
+    actions[cmd](msg);
   }
 });
 
@@ -25,19 +25,18 @@ function onPing(msg) {
 
 function onRoll(msg) {
   msg.channel.send(
-    msg.author.username 
-    + ' has rolled ' 
-    + (Math.floor(Math.random() * 100) + 1) 
+    msg.author.username
+    + ' has rolled '
+    + (Math.floor(Math.random() * 100) + 1)
     + '!'
   );
 }
 
 client.on('messageReactionAdd', (reaction, user) => {
-  let channel = client.channels.find(channel => channel.id === reaction.message.channel.id);
-  channel.send(reaction.users.last().username 
-    + ' reacted to ' 
-    + reaction.message.author 
-    + ' with ' 
+  reaction.message.channel.send(user.username
+    + ' reacted to '
+    + reaction.message.author
+    + ' with '
     + reaction._emoji.name);
 });
 
