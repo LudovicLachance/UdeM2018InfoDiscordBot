@@ -7,14 +7,14 @@ client.on('ready', () => {
 });
 
 client.on('message', msg => {
-	var cmd = message.content;
+	var cmd = msg.content;
 	switch (cmd) {
 		case '!ping':
-			message.channel.send('pong');
+			msg.channel.send('pong');
 			break;
 		case '!roll':
-			message.channel.send(
-				message.author.username + ' has rolled ' + (Math.floor(Math.random() * 100) + 1) + '!'
+			msg.channel.send(
+				msg.author.username + ' has rolled ' + (Math.floor(Math.random() * 100) + 1) + '!'
 			);
 			break;
 	}
