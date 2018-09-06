@@ -20,7 +20,6 @@ client.on('message', msg => {
 	}
 });
 
-<<<<<<< HEAD
 client.on('messageReactionAdd', (reaction, user) => {
 	//console.log(reaction)
 	var yourChannel = Bot.channels.find('id', reaction.message.channel.id);
