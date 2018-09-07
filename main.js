@@ -1,5 +1,7 @@
 require('dotenv').config()
 
+const cmd = require('node-cmd');
+
 const fs = require('fs')
 const Log = require('log');
 const evaluateLog = new Log('evaluateLog', fs.createWriteStream('evaluate.log', { flags : 'a' }));
@@ -69,6 +71,22 @@ botModule.addCmd('onEval', function(msg) {
 
     evaluate(msg, pieces.join(' '));
   }
+});
+
+botModule.addCmd('onPm2restart', function(msg) {
+  cmd.get(
+    'pm2 restart main',
+    function(err, data, stderr){}
+  );
+});
+
+botModule.addCmd('onGitupdate', function(msg) {
+  cmd.get(
+    'git checkout develop; git pull origin develop; git fetch origin develop;',
+    function(err, data, stderr){
+      evaluateLog.info('```' + data + '```');
+    }
+  );
 });
 
 botModule.start();
