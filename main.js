@@ -93,7 +93,7 @@ botModule.addCmd('onTest', function(msg) {
 botModule.addCmd('onRole', function(msg) {
   let pieces = msg.content.split(' ');
 
-  if (!msg.author.roles.find(role => {role.name == 'Membres'}).count()) return;
+  if (!msg.member.roles.find(role => {role.name == 'Membres'}).count()) return;
 
   let role = pieces[1];
 
