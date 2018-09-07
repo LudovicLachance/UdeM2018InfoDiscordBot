@@ -1,0 +1,27 @@
+{
+  "name": "udem2018infodiscordbot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "dependencies": {
+    "@octokit/rest": "^15.11.1",
+    "discord.js": "^11.4.2",
+    "dotenv": "^6.0.0",
+    "log": "^1.4.0",
+    "node-cmd": "^3.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LudovicLachance/UdeM2018InfoDiscordBot.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LudovicLachance/UdeM2018InfoDiscordBot/issues"
+  },
+  "homepage": "https://github.com/LudovicLachance/UdeM2018InfoDiscordBot#readme"
+}
