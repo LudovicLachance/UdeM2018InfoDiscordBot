@@ -87,11 +87,10 @@ botModule.addCmd('onGitinvite', function(msg) {
     owner: process.env.GITHUB_USERNAME,
     repo: process.env.GITHUB_REPO,
     username: msg.content.split(' ')[1]},
-    (error, result) => {
-      msg.channel.send(
-        msg.content.split(' ')[1] + ' has been invited!'
-      );
-    }
+    (error, result) => {}
+  );
+  msg.channel.send(
+    msg.content.split(' ')[1] + ' has been invited!'
   );
 });
 
