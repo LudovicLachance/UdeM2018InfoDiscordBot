@@ -41,7 +41,7 @@ botModule.addCmd('onPing', function(msg) {
 
 botModule.addCmd('onRoll', function(msg) {
   msg.channel.send(
-    msg.author.username
+    msg.author
     + ' has rolled '
     + (Math.floor(Math.random() * 100) + 1)
     + '!'
@@ -86,6 +86,12 @@ botModule.addCmd('onGitupdate', function(msg) {
     function(err, data, stderr){
       evaluateLog.info('```' + data + '```');
     }
+  );
+});
+
+botModule.addCmd('onTest', function(msg) {
+  msg.channel.send(
+    msg.author + ' the test is working!'
   );
 });
 
