@@ -90,6 +90,20 @@ botModule.addCmd('onTest', function(msg) {
   );
 });
 
+botModule.addCmd('onRole', function(msg) {
+  let pieces = msg.content.split(' ');
+
+  let role = pieces[1];
+
+  let roleid = msg.guild.roles.find(role => {role.name == role}).id;
+
+  msg.member.addRole(roleid);
+
+  msg.channel.send(
+    msg.author + ' is a ' + role + '!'
+  );
+});
+
 botModule.start();
 
 function evaluate(msg, text) {
