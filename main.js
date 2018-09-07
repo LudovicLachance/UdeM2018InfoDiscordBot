@@ -1,33 +1,57 @@
 require('dotenv').config()
-const Discord = require('discord.js');
-const client = new Discord.Client();
+let Discord = require('discord.js');
 
-client.on('ready', () => {
-	console.log(`Logged in as ${client.user.tag}!`);
+let botModule = (function(client) {
+  client.on('ready', () => {
+    console.log(`Logged in as ${client.user.tag}!`);
+  });
+
+  let commands = {};
+
+  client.on('message', msg => {
+    let cmd = msg.content;
+    cmd = cmd.replace('!', '');
+    cmd = cmd.charAt(0).toUpperCase() + cmd.slice(1);
+    cmd = 'on' + cmd;
+
+    if (cmd in commands) {
+      commands[cmd](msg);
+    }
+  });
+
+  client.on('messageReactionAdd', (reaction, user) => {
+    reaction.message.channel.send(user.username
+      + ' reacted to '
+      + reaction.message.author
+      + ' with '
+      + reaction._emoji.name);
+  });
+
+  function addCmd(name, funct) {
+    commands[name] = funct;
+  }
+
+  function start() {
+    client.login(process.env.BOT_KEY);
+  }
+
+  return {
+    start,
+    addCmd,
+  };
+})(new Discord.Client());
+
+botModule.addCmd('onPing', function(msg) {
+  msg.channel.send('pong');
 });
 
-client.on('message', msg => {
-	var cmd = msg.content;
-	switch (cmd) {
-		case '!ping':
-			msg.channel.send('pong');
-			break;
-		case '!roll':
-			msg.channel.send(
-				msg.author.username + ' has rolled ' + (Math.floor(Math.random() * 100) + 1) + '!'
-			);
-			break;
-	}
+botModule.addCmd('onRoll', function(msg) {
+  msg.channel.send(
+    msg.author.username
+    + ' has rolled '
+    + (Math.floor(Math.random() * 100) + 1)
+    + '!'
+  );
 });
 
-client.on('messageReactionAdd', (reaction, user) => {
-	//console.log(reaction)
-	var yourChannel = client.channels.find('id', reaction.message.channel.id);
-	var reactionAuthor;
-	for (user of reaction.users) {
-		reactionAuthor = user[1].username;
-	}
-	yourChannel.send(reactionAuthor + ' reacted to ' + reaction.message.author + ' with ' + reaction._emoji.name);
-});
-
-client.login(process.env.BOT_KEY);
+botModule.start();
