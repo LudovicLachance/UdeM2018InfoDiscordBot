@@ -56,8 +56,18 @@ let botModule = (function(client) {
   return {
     start,
     addCmd,
+    commands,
   };
 })(new Discord.Client());
+
+botModule.addCmd('onHelp', function(msg) {
+  let list = Object.keys(botModule.commands);
+  for (let e in list) {
+    list[e] = list[e].replace('on', '!');
+    list[e] = list[e].toLowerCase();
+  }
+  msg.channel.send('Command list:\n' + list.join('\n'));
+});
 
 botModule.addCmd('onPing', function(msg) {
   msg.channel.send('pong');
@@ -77,17 +87,41 @@ botModule.addCmd('onGitinvite', function(msg) {
     owner: process.env.GITHUB_USERNAME,
     repo: process.env.GITHUB_REPO,
     username: msg.content.split(' ')[1]},
-    (error, result) => {}
+    (error, result) => {
+      msg.channel.send(
+        msg.content.split(' ')[1] + ' has been invited!'
+      );
+    }
   );
 });
 
 botModule.addCmd('onEvaluate', function(msg) {
-  let pieces = msg.content.split(' ');
-  delete pieces[0];
-  let result = eval(pieces.join(' '));
-  msg.channel.send(
-    'Result: ' + result
-  );
+  if (msg.content.includes('```')) {
+    let pieces = msg.content.split('```');
+    try {
+      let result = eval(pieces[1]);
+      msg.channel.send(
+        'Result: ' + result
+      );    
+    } catch (error) {
+      msg.channel.send(
+        'Error: ' + error
+      );
+    }
+  } else {
+    let pieces = msg.content.split(' ');
+    delete pieces[0];
+    try {
+      let result = eval(pieces.join(' '));
+      msg.channel.send(
+        'Result: ' + result
+      );    
+    } catch (error) {
+      msg.channel.send(
+        'Error: ' + error
+      );
+    }
+  }
 });
 
 botModule.start();
