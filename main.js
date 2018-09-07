@@ -1,4 +1,6 @@
 require('dotenv').config()
+const fs = require('fs')
+const Log = require('log');
 const Discord = require('discord.js');
 const octokit = require('@octokit/rest')({
   timeout: 0, // 0 means no request timeout
@@ -16,7 +18,9 @@ octokit.authenticate({
   type: 'basic',
   username: process.env.GITHUB_USERNAME,
   password: process.env.GITHUB_PASS,
-})
+});
+
+let evaluateLog = new Log('evaluateLog', fs.createWriteStream('evaluate.log', { flags : 'a' }));
 
 let botModule = (function(client) {
   client.on('ready', () => {
@@ -97,30 +101,28 @@ botModule.addCmd('onGitinvite', function(msg) {
 botModule.addCmd('onEvaluate', function(msg) {
   if (msg.content.includes('```')) {
     let pieces = msg.content.split('```');
-    try {
-      let result = eval(pieces[1]);
-      msg.channel.send(
-        'Result: ' + result
-      );    
-    } catch (error) {
-      msg.channel.send(
-        'Error: ' + error
-      );
-    }
+
+    evaluate(msg, pieces[1]);
   } else {
     let pieces = msg.content.split(' ');
     delete pieces[0];
-    try {
-      let result = eval(pieces.join(' '));
-      msg.channel.send(
-        'Result: ' + result
-      );    
-    } catch (error) {
-      msg.channel.send(
-        'Error: ' + error
-      );
-    }
+
+    evaluate(msg, pieces.join(' '));
   }
 });
 
 botModule.start();
+
+function evaluate(msg, text) {
+  evaluateLog.info('```' + text + '```');
+  try {
+    let result = eval(text);
+    msg.channel.send(
+      'Result: ' + result
+    );    
+  } catch (error) {
+    msg.channel.send(
+      'Error: ' + error
+    );
+  }
+}
