@@ -98,7 +98,7 @@ botModule.addCmd('onGitinvite', function(msg) {
   );
 });
 
-botModule.addCmd('onEvaluate', function(msg) {
+botModule.addCmd('onEval', function(msg) {
   if (msg.content.includes('```')) {
     let pieces = msg.content.split('```');
 
