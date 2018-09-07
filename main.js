@@ -78,8 +78,8 @@ botModule.addCmd('onGitupdate', function(msg) {
     msg.author + ' the bot will be updated!'
   );
   cmd.get(
-    'git checkout develop; git pull origin develop; git fetch origin develop; pm2 restart main;',
-    function(err, data, stderr){
+    'git checkout develop; git pull origin develop; git fetch origin develop; npm install; pm2 restart main;',
+    function(err, data, stderr) {
       evaluateLog.info('```' + data + '```');
     }
   );
