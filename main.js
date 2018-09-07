@@ -97,7 +97,7 @@ botModule.addCmd('onRole', function(msg) {
 
   let rolename = pieces[1];
 
-  if (['Modérateurs', 'Administrateur', 'Membres'].includes(role)) return;
+  if (['Modérateurs', 'Administrateur', 'Membres'].includes(rolename)) return;
 
   let roleid = msg.guild.roles.find(role => {role.name == rolename}).id;
 
