@@ -9,6 +9,7 @@ module.exports = (function(client) {
 
   client.on('message', msg => {
     let cmd = msg.content;
+    if (cmd[0] !== '!') return;
     cmd = cmd.split(' ')[0];
     cmd = cmd.replace('!', '');
     cmd = cmd.charAt(0).toUpperCase() + cmd.slice(1);
