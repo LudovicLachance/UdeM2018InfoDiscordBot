@@ -21,9 +21,8 @@ const octokit = require('@octokit/rest')({
 });
 
 octokit.authenticate({
-  type: 'basic',
-  username: process.env.GITHUB_USERNAME,
-  password: process.env.GITHUB_PASS,
+  type: 'token',
+  token: process.env.GITHUB_TOKEN,
 });
 
 botModule.addCmd('onHelp', function(msg) {
