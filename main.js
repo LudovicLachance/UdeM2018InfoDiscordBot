@@ -1,7 +1,11 @@
 require('dotenv').config()
+
 const fs = require('fs')
 const Log = require('log');
-const Discord = require('discord.js');
+const evaluateLog = new Log('evaluateLog', fs.createWriteStream('evaluate.log', { flags : 'a' }));
+
+const botModule = require('./botModule');
+
 const octokit = require('@octokit/rest')({
   timeout: 0, // 0 means no request timeout
   headers: {
@@ -19,50 +23,6 @@ octokit.authenticate({
   username: process.env.GITHUB_USERNAME,
   password: process.env.GITHUB_PASS,
 });
-
-let evaluateLog = new Log('evaluateLog', fs.createWriteStream('evaluate.log', { flags : 'a' }));
-
-let botModule = (function(client) {
-  client.on('ready', () => {
-    console.log(`Logged in as ${client.user.tag}!`);
-  });
-
-  let commands = {};
-
-  client.on('message', msg => {
-    let cmd = msg.content;
-    cmd = cmd.split(' ')[0];
-    cmd = cmd.replace('!', '');
-    cmd = cmd.charAt(0).toUpperCase() + cmd.slice(1);
-    cmd = 'on' + cmd;
-
-    if (cmd in commands) {
-      commands[cmd](msg);
-    }
-  });
-
-  client.on('messageReactionAdd', (reaction, user) => {
-    reaction.message.channel.send(user.username
-      + ' reacted to '
-      + reaction.message.author
-      + ' with '
-      + reaction._emoji.name);
-  });
-
-  function addCmd(name, funct) {
-    commands[name] = funct;
-  }
-
-  function start() {
-    client.login(process.env.BOT_KEY);
-  }
-
-  return {
-    start,
-    addCmd,
-    commands,
-  };
-})(new Discord.Client());
 
 botModule.addCmd('onHelp', function(msg) {
   let list = Object.keys(botModule.commands);
