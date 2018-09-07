@@ -95,11 +95,11 @@ botModule.addCmd('onRole', function(msg) {
 
   if (!msg.member.roles.find(role => {role.name == 'Membres'})) return;
 
-  let role = pieces[1];
+  let rolename = pieces[1];
 
   if (['Modérateurs', 'Administrateur', 'Membres'].includes(role)) return;
 
-  let roleid = msg.guild.roles.find(role => {role.name == role}).id;
+  let roleid = msg.guild.roles.find(role => {role.name == rolename}).id;
 
   msg.member.addRole(roleid);
 
