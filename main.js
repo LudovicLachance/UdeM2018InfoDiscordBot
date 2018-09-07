@@ -81,4 +81,13 @@ botModule.addCmd('onGitinvite', function(msg) {
   );
 });
 
+botModule.addCmd('onEvaluate', function(msg) {
+  let pieces = msg.content.split(' ');
+  delete pieces[0];
+  let result = eval(pieces.join(' '));
+  msg.channel.send(
+    'Result: ' + result
+  );
+});
+
 botModule.start();
