@@ -20,7 +20,7 @@ module.exports = (function(client) {
   });
 
   client.on('messageReactionAdd', (reaction, user) => {
-    reaction.message.channel.send(user.username
+    reaction.message.channel.send(user
       + ' reacted to '
       + reaction.message.author
       + ' with '
