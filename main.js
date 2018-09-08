@@ -1,10 +1,10 @@
-require('dotenv').config()
+require('dotenv').config();
 
 const cmd = require('node-cmd');
 
-const fs = require('fs')
+const fs = require('fs');
 const Log = require('log');
-const evaluateLog = new Log('evaluateLog', fs.createWriteStream('evaluate.log', { flags : 'a' }));
+const evaluateLog = new Log('evaluateLog', fs.createWriteStream('evaluate.log', { flags: 'a' }));
 
 const botModule = require('./botModule');
 
@@ -13,16 +13,16 @@ const octokit = require('@octokit/rest')({
   headers: {
     accept: 'application/vnd.github.v3+json',
     'user-agent': 'octokit/rest.js v1.2.3' // v1.2.3 will be current version
-  }, 
+  },
   // custom GitHub Enterprise URL
-  baseUrl: 'https://api.github.com', 
+  baseUrl: 'https://api.github.com',
   // Node only: advanced request options can be passed as http(s) agent
   agent: undefined
 });
 
 octokit.authenticate({
   type: 'token',
-  token: process.env.GITHUB_TOKEN,
+  token: process.env.GITHUB_TOKEN
 });
 
 botModule.addCmd('onHelp', function(msg) {
@@ -39,24 +39,19 @@ botModule.addCmd('onPing', function(msg) {
 });
 
 botModule.addCmd('onRoll', function(msg) {
-  msg.channel.send(
-    msg.author
-    + ' has rolled '
-    + (Math.floor(Math.random() * 100) + 1)
-    + '!'
-  );
+  msg.channel.send(msg.author + ' has rolled ' + (Math.floor(Math.random() * 100) + 1) + '!');
 });
 
 botModule.addCmd('onGitinvite', function(msg) {
-  octokit.repos.addCollaborator({
-    owner: process.env.GITHUB_USERNAME,
-    repo: process.env.GITHUB_REPO,
-    username: msg.content.split(' ')[1]},
+  octokit.repos.addCollaborator(
+    {
+      owner: process.env.GITHUB_USERNAME,
+      repo: process.env.GITHUB_REPO,
+      username: msg.content.split(' ')[1]
+    },
     (error, result) => {}
   );
-  msg.channel.send(
-    msg.content.split(' ')[1] + ' has been invited!'
-  );
+  msg.channel.send(msg.content.split(' ')[1] + ' has been invited!');
 });
 
 botModule.addCmd('onEval', function(msg) {
@@ -73,9 +68,7 @@ botModule.addCmd('onEval', function(msg) {
 });
 
 botModule.addCmd('onGitupdate', function(msg) {
-  msg.channel.send(
-    msg.author + ' the bot will be updated!'
-  );
+  msg.channel.send(msg.author + ' the bot will be updated!');
   cmd.get(
     'git checkout develop; git pull origin develop; git fetch origin develop; npm install; pm2 restart main;',
     function(err, data, stderr) {
@@ -85,28 +78,48 @@ botModule.addCmd('onGitupdate', function(msg) {
 });
 
 botModule.addCmd('onTest', function(msg) {
-  msg.channel.send(
-    msg.author + ' the test is working!'
-  );
+  msg.channel.send(msg.author + ' the test is working!');
 });
 
 botModule.addCmd('onRole', function(msg) {
   let pieces = msg.content.split(' ');
 
-  if (!msg.member.roles.find(role => {role.name == 'Membres'})) return;
+  if (
+    !msg.member.roles.find(role => {
+      role.name == 'Membres';
+    })
+  )
+    return;
 
   let rolename = pieces[1];
 
   if (['Modérateurs', 'Administrateur', 'Membres'].includes(rolename)) return;
 
-  let roleid = msg.guild.roles.find(role => {role.name == rolename}).id;
+  let roleid = msg.guild.roles.find(role => {
+    role.name == rolename;
+  }).id;
 
   msg.member.addRole(roleid);
 
-  msg.channel.send(
-    msg.author + ' is a ' + role + '!'
-  );
+  msg.channel.send(msg.author + ' is a ' + role + '!');
 });
+
+botModule.addCmd('onShitPost', function(msg) {
+  var string = msg.content.split(' ');
+  msg.channel.send(generateShitPost(string));
+});
+
+function generateShitPost(text) {
+  var result = '';
+  for (var j = 1; j < text.length; j++) {
+    for (var i = 0; i < text[j].length; i++) {
+      result += ':regional_indicator_' + text[j].charAt(i) + ': ';
+    }
+    result += '\r\n';
+  }
+
+  return result;
+}
 
 botModule.start();
 
@@ -114,12 +127,8 @@ function evaluate(msg, text) {
   evaluateLog.info('```' + text + '```');
   try {
     let result = eval(text);
-    msg.channel.send(
-      'Result: ' + result
-    );    
+    msg.channel.send('Result: ' + result);
   } catch (error) {
-    msg.channel.send(
-      'Error: ' + error
-    );
+    msg.channel.send('Error: ' + error);
   }
 }
