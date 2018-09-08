@@ -104,23 +104,6 @@ botModule.addCmd('onRole', function(msg) {
   msg.channel.send(msg.author + ' is a ' + role + '!');
 });
 
-botModule.addCmd('onShitPost', function(msg) {
-  var string = msg.content.split(' ');
-  msg.channel.send(generateShitPost(string));
-});
-
-function generateShitPost(text) {
-  var result = '';
-  for (var j = 1; j < text.length; j++) {
-    for (var i = 0; i < text[j].length; i++) {
-      result += ':regional_indicator_' + text[j].charAt(i) + ': ';
-    }
-    result += '\r\n';
-  }
-
-  return result;
-}
-
 botModule.start();
 
 function evaluate(msg, text) {
