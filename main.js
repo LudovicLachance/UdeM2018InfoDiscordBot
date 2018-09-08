@@ -1,4 +1,4 @@
-require('dotenv').config()
+require('dotenv').config();
 let Discord = require('discord.js');
 
 let botModule = (function(client) {
@@ -20,11 +20,9 @@ let botModule = (function(client) {
   });
 
   client.on('messageReactionAdd', (reaction, user) => {
-    reaction.message.channel.send(user.username
-      + ' reacted to '
-      + reaction.message.author
-      + ' with '
-      + reaction._emoji.name);
+    reaction.message.channel.send(
+      user.username + ' reacted to ' + reaction.message.author + ' with ' + reaction._emoji.name
+    );
   });
 
   function addCmd(name, funct) {
@@ -37,7 +35,7 @@ let botModule = (function(client) {
 
   return {
     start,
-    addCmd,
+    addCmd
   };
 })(new Discord.Client());
 
@@ -46,12 +44,24 @@ botModule.addCmd('onPing', function(msg) {
 });
 
 botModule.addCmd('onRoll', function(msg) {
-  msg.channel.send(
-    msg.author.username
-    + ' has rolled '
-    + (Math.floor(Math.random() * 100) + 1)
-    + '!'
-  );
+  msg.channel.send(msg.author.username + ' has rolled ' + (Math.floor(Math.random() * 100) + 1) + '!');
 });
+
+botModule.addCmd('onShitPost', function(msg) {
+  var string = msg.content.split(' ');
+  msg.channel.send(generateShitPost(string));
+});
+
+function generateShitPost(text) {
+  var result = '';
+  for (var j = 1; j < text.length; j++) {
+    for (var i = 0; i < text[j].length; i++) {
+      result += ':regional_indicator_' + text[j].charAt(i) + ': ';
+    }
+    result += '\r\n';
+  }
+
+  return result;
+}
 
 botModule.start();
