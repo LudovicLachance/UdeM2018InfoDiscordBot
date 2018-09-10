@@ -93,7 +93,7 @@ botModule.addCmd('onRole', function(msg) {
     return;
   }
 
-  let rolename = evaluate(msg, getPara(msg.content));;
+  let rolename = getPara(msg.content);
 
   if (['Modérateurs', 'Administrateur', 'Membres'].includes(rolename)) return;
 
