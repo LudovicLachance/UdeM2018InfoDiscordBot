@@ -92,7 +92,9 @@ botModule.addCmd('onRole', function(msg) {
     return;
   }
 
-  let rolename = pieces[1];
+  delete pieces[0];
+
+  let rolename = pieces.join(' ');
 
   if (['Modérateurs', 'Administrateur', 'Membres'].includes(rolename)) return;
 
