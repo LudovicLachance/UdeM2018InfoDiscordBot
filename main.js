@@ -61,7 +61,7 @@ botModule.addCmd('onEval', function(msg) {
 
 botModule.addCmd('onBc', function(msg) {
   cmd.get(
-    'bc <<< ' + getPara(msg.content),
+    'echo "' + getPara(msg.content) + '" | bc',
     function(err, data, stderr) {
       msg.channel.send(err + data + stderr);
     }
