@@ -1,6 +1,10 @@
 const Discord = require('discord.js');
 
-module.exports = (function(client) {
+const fs = require('fs');
+const Log = require('log');
+const errorlog = new Log('errorlog', fs.createWriteStream('boterror.log', { flags: 'a' }));
+
+module.exports = (function(client, errorlog) {
   client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
   });
@@ -16,7 +20,11 @@ module.exports = (function(client) {
     cmd = 'on' + cmd;
 
     if (cmd in commands) {
-      commands[cmd](msg);
+      try {
+        commands[cmd](msg);
+      } catch (error) {
+        errorlog.info('Error in ' + cmd + ' with: ```' + msg.content + '```');
+      }
     }
   });
 
@@ -41,4 +49,4 @@ module.exports = (function(client) {
     addCmd,
     commands,
   };
-})(new Discord.Client());
+})(new Discord.Client(), errorlog);
