@@ -56,16 +56,7 @@ botModule.addCmd('onRoll', function(msg) {
 // });
 
 botModule.addCmd('onEval', function(msg) {
-  if (msg.content.includes('```')) {
-    let pieces = msg.content.split('```');
-
-    evaluate(msg, pieces[1].trim());
-  } else {
-    let pieces = msg.content.split(' ');
-    delete pieces[0];
-
-    evaluate(msg, pieces.join(' ').trim());
-  }
+  evaluate(msg, getPara(msg.content));
 });
 
 botModule.addCmd('onGitupdate', function(msg) {
@@ -94,8 +85,6 @@ botModule.addCmd('onRolelist', function(msg) {
 });
 
 botModule.addCmd('onRole', function(msg) {
-  let pieces = msg.content.split(' ');
-
   if (
     !msg.member.roles.find(function(e) {
       return e.name === 'Membres';
@@ -103,10 +92,8 @@ botModule.addCmd('onRole', function(msg) {
   ) {
     return;
   }
-
-  delete pieces[0];
-
-  let rolename = pieces.join(' ').trim();
+  
+  let rolename = evaluate(msg, getPara(msg.content));;
 
   if (['Modérateurs', 'Administrateur', 'Membres'].includes(rolename)) return;
 
@@ -133,4 +120,20 @@ function evaluate(msg, text) {
   } catch (error) {
     msg.channel.send('Error: ' + error);
   }
+}
+
+function getPara(str) {
+  let pieces = [];
+  let para = '';
+
+  if (str.includes('```')) {
+    pieces = str.split('```');
+    para = pieces[1].trim();
+  } else if (str.includes(' ')) {
+    pieces = str.split(' ');
+    delete pieces[0];
+    para = pieces[1].join(' ').trim();
+  }
+
+  return para;
 }
