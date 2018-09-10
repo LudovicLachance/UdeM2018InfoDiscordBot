@@ -5,6 +5,7 @@ const cmd = require('node-cmd');
 const fs = require('fs');
 const Log = require('log');
 const evaluateLog = new Log('evaluateLog', fs.createWriteStream('evaluate.log', { flags: 'a' }));
+const gitupdateLog = new Log('gitupdateLog', fs.createWriteStream('gitupdate.log', { flags: 'a' }));
 
 const botModule = require('./botModule');
 
@@ -58,12 +59,12 @@ botModule.addCmd('onEval', function(msg) {
   if (msg.content.includes('```')) {
     let pieces = msg.content.split('```');
 
-    evaluate(msg, pieces[1]);
+    evaluate(msg, pieces[1].trim());
   } else {
     let pieces = msg.content.split(' ');
     delete pieces[0];
 
-    evaluate(msg, pieces.join(' '));
+    evaluate(msg, pieces.join(' ').trim());
   }
 });
 
@@ -72,7 +73,7 @@ botModule.addCmd('onGitupdate', function(msg) {
   cmd.get(
     'git checkout develop; git pull origin develop; git fetch origin develop; npm install; pm2 restart main;',
     function(err, data, stderr) {
-      evaluateLog.info('```' + data + '```');
+      gitupdateLog.info('```' + data + '```');
     }
   );
 });
