@@ -85,23 +85,28 @@ botModule.addCmd('onRole', function(msg) {
   let pieces = msg.content.split(' ');
 
   if (
-    !msg.member.roles.find(role => {
-      role.name == 'Membres';
+    !msg.member.roles.find(function(e) {
+      return e.name === 'Membres';
     })
-  )
+  ) {
     return;
+  }
 
   let rolename = pieces[1];
 
   if (['Modérateurs', 'Administrateur', 'Membres'].includes(rolename)) return;
 
-  let roleid = msg.guild.roles.find(role => {
-    role.name == rolename;
-  }).id;
+  let guildrole = msg.guild.roles.find(function(e) {
+    return e.name === rolename;
+  });
 
-  msg.member.addRole(roleid);
+  if (!guildrole) {
+    return;
+  }
 
-  msg.channel.send(msg.author + ' is a ' + role + '!');
+  msg.member.addRole(guildrole.id);
+
+  msg.channel.send(msg.author + ' is a ' + rolename + '!');
 });
 
 botModule.start();
