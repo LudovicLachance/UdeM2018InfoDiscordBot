@@ -63,7 +63,7 @@ botModule.addCmd('onBc', function(msg) {
   cmd.get(
     'echo "' + getPara(msg.content) + '" | bc',
     function(err, data, stderr) {
-      msg.channel.send(err + data + stderr);
+      msg.channel.send(data);
     }
   );
 });
