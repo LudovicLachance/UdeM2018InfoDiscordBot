@@ -92,7 +92,7 @@ botModule.addCmd('onRole', function(msg) {
   ) {
     return;
   }
-  
+
   let rolename = evaluate(msg, getPara(msg.content));;
 
   if (['Modérateurs', 'Administrateur', 'Membres'].includes(rolename)) return;
@@ -129,10 +129,11 @@ function getPara(str) {
   if (str.includes('```')) {
     pieces = str.split('```');
     para = pieces[1].trim();
+
   } else if (str.includes(' ')) {
     pieces = str.split(' ');
     delete pieces[0];
-    para = pieces[1].join(' ').trim();
+    para = pieces.join(' ').trim();
   }
 
   return para;
