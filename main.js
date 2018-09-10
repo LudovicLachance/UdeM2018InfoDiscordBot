@@ -73,7 +73,9 @@ botModule.addCmd('onGitupdate', function(msg) {
   cmd.get(
     'git checkout develop; git pull origin develop; git fetch origin develop; npm install; pm2 restart main;',
     function(err, data, stderr) {
-      gitupdateLog.info('```' + data + '```');
+      gitupdateLog.error('err:\n```' + err + '```');
+      gitupdateLog.info('data:\n```' + data + '```');
+      gitupdateLog.error('stderr:\n```' + stderr + '```');
     }
   );
 });
