@@ -59,6 +59,15 @@ botModule.addCmd('onEval', function(msg) {
   evaluate(msg, getPara(msg.content));
 });
 
+botModule.addCmd('onBc', function(msg) {
+  cmd.get(
+    'bc <<< ' + getPara(msg.content),
+    function(err, data, stderr) {
+      msg.channel.send(err + data + stderr);
+    }
+  );
+});
+
 botModule.addCmd('onGitupdate', function(msg) {
   msg.channel.send(msg.author + ' the bot will be updated!');
   cmd.get(
