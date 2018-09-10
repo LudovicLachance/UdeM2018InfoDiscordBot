@@ -42,17 +42,17 @@ botModule.addCmd('onRoll', function(msg) {
   msg.channel.send(msg.author + ' has rolled ' + (Math.floor(Math.random() * 100) + 1) + '!');
 });
 
-botModule.addCmd('onGitinvite', function(msg) {
-  octokit.repos.addCollaborator(
-    {
-      owner: process.env.GITHUB_USERNAME,
-      repo: process.env.GITHUB_REPO,
-      username: msg.content.split(' ')[1]
-    },
-    (error, result) => {}
-  );
-  msg.channel.send(msg.content.split(' ')[1] + ' has been invited!');
-});
+// botModule.addCmd('onGitinvite', function(msg) {
+//   octokit.repos.addCollaborator(
+//     {
+//       owner: process.env.GITHUB_USERNAME,
+//       repo: process.env.GITHUB_REPO,
+//       username: msg.content.split(' ')[1]
+//     },
+//     (error, result) => {}
+//   );
+//   msg.channel.send(msg.content.split(' ')[1] + ' has been invited!');
+// });
 
 botModule.addCmd('onEval', function(msg) {
   if (msg.content.includes('```')) {
@@ -81,6 +81,15 @@ botModule.addCmd('onTest', function(msg) {
   msg.channel.send(msg.author + ' the test is working!');
 });
 
+botModule.addCmd('onRolelist', function(msg) {
+  let roles = msg.guild.roles.filter(function(e) {
+    return e.name !== '@everyone';
+  })
+  let list = roles.map(function(e) { return e.name; });
+  list = list.join('\n');
+  msg.channel.send(msg.author + ' Rolelist:\n' + list);
+});
+
 botModule.addCmd('onRole', function(msg) {
   let pieces = msg.content.split(' ');
 
@@ -94,7 +103,7 @@ botModule.addCmd('onRole', function(msg) {
 
   delete pieces[0];
 
-  let rolename = pieces.join(' ');
+  let rolename = pieces.join(' ').trim();
 
   if (['Modérateurs', 'Administrateur', 'Membres'].includes(rolename)) return;
 
@@ -108,7 +117,7 @@ botModule.addCmd('onRole', function(msg) {
 
   msg.member.addRole(guildrole.id);
 
-  msg.channel.send(msg.author + ' is a ' + rolename + '!');
+  msg.channel.send(msg.author + ' is now in ' + rolename + '!');
 });
 
 botModule.start();
