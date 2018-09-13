@@ -28,13 +28,13 @@ module.exports = (function(client, botModuleLog) {
     }
   });
 
-  client.on('messageReactionAdd', (reaction, user) => {
-    reaction.message.channel.send(user
-      + ' reacted to '
-      + reaction.message.author
-      + ' with '
-      + reaction._emoji.name);
-  });
+  // client.on('messageReactionAdd', (reaction, user) => {
+  //   reaction.message.channel.send(user
+  //     + ' reacted to '
+  //     + reaction.message.author
+  //     + ' with '
+  //     + reaction._emoji.name);
+  // });
 
   function addCmd(name, funct) {
     commands[name] = funct;
